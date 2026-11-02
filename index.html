@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Catálogo de Juguetes</title>
+    <meta name="description" content="Descubre nuestros juguetes y productos. Consulta precios y realiza tus pedidos por WhatsApp.">
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <header class="encabezado">
+        <h1>🎁 Mi Catálogo</h1>
+        <p>Encuentra tu juguete favorito</p>
+    </header>
+
+    <main class="contenedor">
+
+        <input
+            type="search"
+            id="buscador"
+            placeholder="Buscar un producto..."
+            aria-label="Buscar productos"
+        >
+
+        <nav class="categorias" aria-label="Categorías">
+            <button class="activo" data-categoria="Todos">Todos</button>
+            <button data-categoria="Muñecas">Muñecas</button>
+            <button data-categoria="Carros">Carros</button>
+            <button data-categoria="Bloques">Bloques</button>
+            <button data-categoria="Otros">Otros</button>
+        </nav>
+
+        <section>
+            <h2>Nuestros productos</h2>
+            <div id="productos" class="productos"></div>
+            <p id="sin-resultados" hidden>
+                No encontramos productos.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Mi Catálogo. Todos los derechos reservados.</p>
+        <p>Pedidos y consultas por WhatsApp.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
