@@ -2,6 +2,7 @@ const POR_PAGINA = 24;
 let paginaActual = 0;
 let totalProductos = 0;
 let categoriaSeleccionada = "Todos";
+let modeloSeleccionado = "Todos";
 let textoBusqueda = "";
 let temporizadorBusqueda;
 
@@ -28,13 +29,43 @@ async function cargarCategorias() {
     boton.type = "button";
     boton.textContent = cat;
     boton.classList.toggle("activa", cat === categoriaSeleccionada);
-    boton.addEventListener("click", () => {
+    boton.addEventListener("click", async () => {
       categoriaSeleccionada = cat;
+      modeloSeleccionado = "Todos";
       paginaActual = 0;
+      await cargarModelos();
       cargarProductos();
       marcarCategoriaActiva();
     });
     contenedorCategorias.appendChild(boton);
+  });
+}
+
+async function cargarModelos() {
+  const caja = document.getElementById("modelos-contenedor");
+  const lista = document.getElementById("modelos");
+  lista.replaceChildren();
+  if (categoriaSeleccionada === "Todos") {
+    caja.hidden = true;
+    return;
+  }
+  const { data, error } = await db.from("productos").select("modelo")
+    .eq("categoria", categoriaSeleccionada).not("modelo", "is", null).limit(1000);
+  if (error) { console.error("No se pudieron cargar los modelos:", error); caja.hidden = true; return; }
+  const modelos = ["Todos", ...new Set((data || []).map(x => x.modelo).filter(Boolean).sort((a,b) => a.localeCompare(b, "es")))];
+  caja.hidden = modelos.length <= 1;
+  modelos.forEach(modelo => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = modelo === "Todos" ? "Todos los modelos" : modelo;
+    boton.classList.toggle("activa", modelo === modeloSeleccionado);
+    boton.addEventListener("click", () => {
+      modeloSeleccionado = modelo;
+      paginaActual = 0;
+      [...lista.children].forEach(b => b.classList.toggle("activa", b === boton));
+      cargarProductos();
+    });
+    lista.appendChild(boton);
   });
 }
 
@@ -50,11 +81,12 @@ async function cargarProductos() {
   contenedorPaginacion.replaceChildren();
 
   let consulta = db.from("productos")
-    .select("id,nombre,codigo,categoria,descripcion,precio,creado_en,fotografias(ruta)", { count: "exact" })
+    .select("id,nombre,codigo,categoria,modelo,descripcion,precio,creado_en,fotografias(ruta)", { count: "exact" })
     .order("creado_en", { ascending: false })
     .range(paginaActual * POR_PAGINA, (paginaActual + 1) * POR_PAGINA - 1);
 
   if (categoriaSeleccionada !== "Todos") consulta = consulta.eq("categoria", categoriaSeleccionada);
+  if (categoriaSeleccionada !== "Todos" && modeloSeleccionado !== "Todos") consulta = consulta.eq("modelo", modeloSeleccionado);
   if (textoBusqueda) consulta = consulta.ilike("nombre", `%${textoBusqueda}%`);
 
   const { data, error, count } = await consulta;
@@ -100,7 +132,7 @@ function abrirDetalleProducto(producto) {
   fotosModal = fotos;
   indiceFotoModal = 0;
   document.getElementById("modal-nombre").textContent = producto.nombre;
-  document.getElementById("modal-categoria").textContent = producto.categoria || "";
+  document.getElementById("modal-categoria").textContent = [producto.categoria, producto.modelo].filter(Boolean).join(" · ");
   document.getElementById("modal-codigo").textContent = producto.codigo ? `Código: ${producto.codigo}` : "";
   document.getElementById("modal-descripcion").textContent = producto.descripcion || "Sin descripción disponible.";
   document.getElementById("modal-precio").textContent = `S/ ${Number(producto.precio).toFixed(2)}`;
@@ -258,6 +290,7 @@ document.getElementById("buscar").addEventListener("input", event => {
 });
 
 (async function iniciarCatalogo() {
+  document.getElementById("modelos-contenedor").hidden = true;
   await cargarCategorias();
   await cargarProductos();
 })();
