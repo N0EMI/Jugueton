@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrar catálogo</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header>
+    <h1>Panel de administración</h1>
+    <p>Gestión de productos</p>
+</header>
+
+<main>
+
+    <section id="login">
+        <h2>Iniciar sesión</h2>
+        <input type="email" id="correo" placeholder="Correo">
+        <input type="password" id="contrasena" placeholder="Contraseña">
+        <button id="ingresar">Ingresar</button>
+        <p id="mensaje"></p>
+    </section>
+
+    <section id="panel" hidden>
+
+        <button id="salir">Cerrar sesión</button>
+
+        <h2 id="titulo-formulario">Agregar producto</h2>
+
+        <form id="form-producto">
+
+            <input type="hidden" id="producto-id">
+
+            <input id="nombre" placeholder="Nombre del producto" required>
+
+            <input id="codigo" placeholder="Código del producto">
+
+            <input id="categoria" placeholder="Categoría" required>
+
+            <textarea id="descripcion"
+                placeholder="Descripción"></textarea>
+
+            <input id="precio" type="number"
+                step="0.01" min="0" placeholder="Precio" required>
+
+            <label>Fotografías del producto</label>
+            <input id="imagenes" type="file"
+                accept="image/*" multiple>
+
+            <button type="submit">Guardar producto</button>
+            <button type="button" id="cancelar" hidden>
+                Cancelar edición
+            </button>
+
+        </form>
+
+        <p id="estado"></p>
+
+        <h2>Productos registrados</h2>
+        <div id="lista-admin"></div>
+
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/conexion.js"></script>
+<script src="js/administrador.js"></script>
+
+</body>
+</html>

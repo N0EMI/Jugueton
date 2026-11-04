@@ -3,52 +3,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mi Catálogo de Juguetes</title>
-    <meta name="description" content="Descubre nuestros juguetes y productos. Consulta precios y realiza tus pedidos por WhatsApp.">
-
-    <link rel="stylesheet" href="estilos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi catálogo de juguetes</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
 
-    <header class="encabezado">
-        <h1>🎁 Mi Catálogo</h1>
-        <p>Encuentra tu juguete favorito</p>
-    </header>
+<header>
+    <h1>🎁 Mi catálogo</h1>
+    <p>Encuentra tu juguete favorito</p>
+</header>
 
-    <main class="contenedor">
+<main>
+    <input id="buscar" placeholder="Buscar productos...">
 
-        <input
-            type="search"
-            id="buscador"
-            placeholder="Buscar un producto..."
-            aria-label="Buscar productos"
-        >
+    <div id="categorias"></div>
 
-        <nav class="categorias" aria-label="Categorías">
-            <button class="activo" data-categoria="Todos">Todos</button>
-            <button data-categoria="Muñecas">Muñecas</button>
-            <button data-categoria="Carros">Carros</button>
-            <button data-categoria="Bloques">Bloques</button>
-            <button data-categoria="Otros">Otros</button>
-        </nav>
+    <section id="productos" class="productos">
+        Cargando productos...
+    </section>
+</main>
 
-        <section>
-            <h2>Nuestros productos</h2>
-            <div id="productos" class="productos"></div>
-            <p id="sin-resultados" hidden>
-                No encontramos productos.
-            </p>
-        </section>
+<footer>© 2026 Mi catálogo</footer>
 
-    </main>
-
-    <footer>
-        <p>© 2026 Mi Catálogo. Todos los derechos reservados.</p>
-        <p>Pedidos y consultas por WhatsApp.</p>
-    </footer>
-
-    <script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/conexion.js"></script>
+<script src="js/catalogo.js"></script>
 </body>
 </html>
