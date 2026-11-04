@@ -136,3 +136,9 @@ small.ayuda { display: block; color: var(--muted); margin-top: -8px; }
   .modal-galeria { min-height: 210px; }
   .modal-galeria img { height: 38vh; }
 }
+
+/* Filtro secundario: modelos visibles solo al seleccionar una categoría */
+.modelos-contenedor { margin-top: 12px; padding: 12px 14px; background: #edf5ef; border: 1px solid #d8e8dc; border-radius: 12px; }
+.titulo-modelos { margin: 0 0 7px; color: var(--verde-oscuro); font-weight: 900; font-size: .9rem; }
+.modelos { margin-top: 0; }
+.modelos button { font-size: .9rem; padding: 7px 11px; }
