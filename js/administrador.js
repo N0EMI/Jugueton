@@ -69,7 +69,7 @@ db.auth.onAuthStateChange((_event, session) => {
 
 async function cargarLista() {
   const { data, error } = await db.from("productos")
-    .select("id,nombre,codigo,categoria,precio")
+    .select("id,nombre,codigo,categoria,modelo,precio")
     .order("creado_en", { ascending: false })
     .limit(1000);
   if (error) {
@@ -93,7 +93,7 @@ function dibujarLista(items) {
     const nombre = document.createElement("h4");
     nombre.textContent = producto.nombre;
     const detalle = document.createElement("p");
-    detalle.textContent = `${producto.categoria || "Sin categoría"} · S/ ${Number(producto.precio).toFixed(2)}${producto.codigo ? ` · ${producto.codigo}` : ""}`;
+    detalle.textContent = `${producto.categoria || "Sin categoría"}${producto.modelo ? ` / ${producto.modelo}` : ""} · S/ ${Number(producto.precio).toFixed(2)}${producto.codigo ? ` · ${producto.codigo}` : ""}`;
     info.append(nombre, detalle);
 
     const acciones = document.createElement("div");
@@ -118,7 +118,8 @@ document.getElementById("buscar-admin").addEventListener("input", event => {
   dibujarLista(productosAdmin.filter(p =>
     p.nombre.toLowerCase().includes(q) ||
     (p.codigo || "").toLowerCase().includes(q) ||
-    (p.categoria || "").toLowerCase().includes(q)
+    (p.categoria || "").toLowerCase().includes(q) ||
+    (p.modelo || "").toLowerCase().includes(q)
   ));
 });
 
@@ -130,6 +131,7 @@ async function editarProducto(id) {
   document.getElementById("nombre").value = producto.nombre || "";
   document.getElementById("codigo").value = producto.codigo || "";
   document.getElementById("categoria").value = producto.categoria || "";
+  document.getElementById("modelo").value = producto.modelo || "";
   document.getElementById("descripcion").value = producto.descripcion || "";
   document.getElementById("precio").value = producto.precio ?? "";
   document.getElementById("titulo-formulario").textContent = "Editar producto";
@@ -194,6 +196,25 @@ document.getElementById("imagenes").addEventListener("change", event => {
   });
 });
 
+
+async function actualizarSugerenciasModelos() {
+  const categoria = document.getElementById("categoria").value.trim();
+  const lista = document.getElementById("modelos-sugeridos");
+  lista.replaceChildren();
+  if (!categoria) return;
+  const { data, error } = await db.from("productos").select("modelo")
+    .eq("categoria", categoria).not("modelo", "is", null).limit(500);
+  if (error) return;
+  [...new Set((data || []).map(x => x.modelo).filter(Boolean))].sort().forEach(modelo => {
+    const opcion = document.createElement("option");
+    opcion.value = modelo;
+    lista.appendChild(opcion);
+  });
+}
+
+document.getElementById("categoria").addEventListener("change", actualizarSugerenciasModelos);
+document.getElementById("categoria").addEventListener("blur", actualizarSugerenciasModelos);
+
 document.getElementById("cancelar").addEventListener("click", limpiarFormulario);
 
 formulario.addEventListener("submit", async event => {
@@ -207,6 +228,7 @@ formulario.addEventListener("submit", async event => {
     nombre: document.getElementById("nombre").value.trim(),
     codigo: document.getElementById("codigo").value.trim() || null,
     categoria: document.getElementById("categoria").value.trim(),
+    modelo: document.getElementById("modelo").value.trim() || null,
     descripcion: document.getElementById("descripcion").value.trim(),
     precio: Number(document.getElementById("precio").value)
   };
