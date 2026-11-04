@@ -64,6 +64,12 @@
               <datalist id="categorias-sugeridas"></datalist>
             </div>
             <div>
+              <label for="modelo">Modelo / subcategoría</label>
+              <input id="modelo" maxlength="100" list="modelos-sugeridos" placeholder="Ej. Full Starwars, Full motos, Full autos">
+              <datalist id="modelos-sugeridos"></datalist>
+              <small class="ayuda">Se mostrará al cliente solo después de elegir la categoría.</small>
+            </div>
+            <div>
               <label for="precio">Precio (S/) *</label>
               <input id="precio" type="number" step="0.01" min="0" required placeholder="0.00">
             </div>
