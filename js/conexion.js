@@ -6,6 +6,6 @@ const CLAVE_PUBLICA = "sb_publishable_NV8iyA2bRC4yKoPVxHRgpw_D6ffiutF";
 
 // Reemplaza este número por el WhatsApp del negocio, con código de país.
 // Perú: 51 + número, sin +, espacios ni guiones.
-const NUMERO_WHATSAPP = "51910380831";
+const NUMERO_WHATSAPP = "51983002951";
 
 const db = window.supabase.createClient(URL_SUPABASE, CLAVE_PUBLICA);
