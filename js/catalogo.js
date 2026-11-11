@@ -139,7 +139,6 @@ function abrirDetalleProducto(producto) {
   const mensaje = [
     "Hola, deseo consultar por este producto:",
     `Nombre: ${producto.nombre}`,
-    `Código: ${producto.codigo || "Sin código"}`,
     `Precio: S/ ${Number(producto.precio).toFixed(2)}`,
     fotos.length ? `Fotografía: ${fotos[0]}` : "Este producto no tiene fotografía registrada."
   ].join("\n");
@@ -202,7 +201,6 @@ function mostrarTarjeta(producto) {
   const mensajeWhatsApp = [
     "Hola, deseo consultar por este producto:",
     `Nombre: ${producto.nombre}`,
-    `Código: ${producto.codigo || "Sin código"}`,
     `Precio: S/ ${Number(producto.precio).toFixed(2)}`,
     fotoPrincipal ? `Fotografía: ${fotoPrincipal}` : "Este producto no tiene fotografía registrada."
   ].join("\n");
